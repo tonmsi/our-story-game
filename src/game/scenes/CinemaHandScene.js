@@ -164,10 +164,8 @@ export default class CinemaHandScene extends Phaser.Scene {
       .setInteractive({ useHandCursor: true })
       .setScale(0.9) // leggermente più piccolo
       .setAlpha(0);
-    this.continueBtn.on("pointerdown", () => {
-      // placeholder: prossimo livello non implementato, per ora restart
-      this.scene.restart();
-    });
+    this.continueBtn.on("pointerdown", () => this.goToLevel2());
+    this.input.keyboard.on("keydown-ENTER", () => this.goToLevel2());
 
     // Overlay game over
     this.gameOverBg = this.add
@@ -562,6 +560,13 @@ export default class CinemaHandScene extends Phaser.Scene {
         ease: "Sine.Out",
       });
     });
+  }
+
+  goToLevel2() {
+    if (!this.continueBtn.visible) return;
+    if (this.bgm) this.bgm.stop();
+    // start automatically stops this scene, no explicit stop needed
+    this.scene.start("Level2Runner");
   }
 
   switchToLoop2() {
